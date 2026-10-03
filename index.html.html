@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Combo Scanner Pro</title>
+<style>
+:root{--bg:#070d10;--p1:#0d171b;--p2:#132228;--ln:#1a2b31;--fg:#e8e4d8;--mu:#7a8e93;--br:#d4ad55;--br2:#f0d58a;--up:#34d399;--dn:#ff6b5e;--r:14px}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--fg);font:14.5px/1.45 "Avenir Next",Avenir,"Segoe UI",system-ui,sans-serif;
+ background:radial-gradient(900px 460px at 85% -180px,#17332e,transparent 65%),radial-gradient(700px 380px at 0 -120px,#2a2410,transparent 60%),var(--bg)}
+.hdr{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 22px;background:#070d10d9;backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)}
+.lgo{display:flex;align-items:center;gap:9px;font:600 19px Georgia,"Iowan Old Style",serif}
+.lgo em{font:700 11px system-ui;font-style:normal;color:#1a1405;background:linear-gradient(135deg,var(--br2),var(--br));padding:3px 8px;border-radius:6px}
+.hr{margin-left:auto;display:flex;align-items:center;gap:14px}
+.live{display:flex;align-items:center;gap:8px;color:var(--mu);font-size:13px;padding:6px 12px;border:1px solid var(--ln);border-radius:99px;background:var(--p1)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--mu)}.live.on i{background:var(--up);animation:p 2s infinite}
+@keyframes p{0%{box-shadow:0 0 0 0 #34d39999}70%{box-shadow:0 0 0 8px #34d39900}}
+.go{background:linear-gradient(135deg,var(--br2),var(--br));color:#1a1405;border:0;border-radius:10px;padding:9px 24px;font:700 14px inherit;cursor:pointer;box-shadow:0 6px 20px -8px var(--br)}
+.go:disabled{opacity:.5}:focus-visible{outline:2px solid var(--br);outline-offset:2px}
+.w{max-width:1040px;margin:auto;padding:22px 18px 50px}
+.seg{display:flex;border:1px solid var(--ln);border-radius:10px;overflow:hidden;background:var(--p1)}
+.seg button{background:none;border:0;color:var(--mu);padding:8px 14px;font:inherit;cursor:pointer}
+.seg button.on{background:#d4ad5526;color:var(--br2);font-weight:700}
+.kpis{display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;gap:14px;margin-bottom:18px}
+.k{background:linear-gradient(180deg,var(--p2),var(--p1));border:1px solid var(--ln);border-radius:var(--r);padding:16px 18px}
+.kl{color:var(--mu);font-size:12.5px}.kv{font:400 40px/1.1 Georgia,"Iowan Old Style",serif;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.ks{color:var(--mu);font-size:12.5px}.ks b{font-weight:600}.kg{display:flex;align-items:center;gap:16px}
+.lgd{display:grid;gap:5px;margin-top:8px;font-size:13px}.lgd span{display:flex;align-items:center;gap:8px;color:var(--mu)}.lgd i{width:9px;height:9px;border-radius:3px}.lgd b{color:var(--fg);margin-left:auto;padding-left:14px}
+.sh{font:600 15px Georgia,serif;margin:0 0 10px;color:var(--br2)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:20px}
+.tile{border:1px solid var(--ln);border-radius:var(--r);padding:14px 16px;background:var(--p1)}
+.tile.buy{border-color:#34d39966;background:linear-gradient(160deg,#34d39922,var(--p1) 60%)}.tile.sell{border-color:#ff6b5e66;background:linear-gradient(160deg,#ff6b5e22,var(--p1) 60%)}
+.tile .t1{display:flex;justify-content:space-between;align-items:baseline}.tile b{font-size:16px}.tile .dir{font:400 26px Georgia,serif}
+.tile small{display:block;color:var(--mu);font-size:12.5px;margin-top:4px}
+.ctl{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin-bottom:12px;padding:12px 16px;border:1px solid var(--ln);border-radius:var(--r);background:var(--p1)}
+.tabs{display:flex;gap:4px}.tabs button{background:none;border:0;color:var(--mu);padding:6px 12px;border-radius:8px;font:inherit;cursor:pointer}
+.tabs button.on{background:var(--p2);color:var(--fg);font-weight:600}
+label{color:var(--mu);font-size:13px;display:flex;align-items:center;gap:6px}
+input,textarea{background:var(--bg);color:var(--fg);border:1px solid var(--ln);border-radius:8px;padding:7px 9px;font:inherit}
+input[type=number]{width:62px}input[type=checkbox]{accent-color:var(--br);width:16px;height:16px}
+details{margin-bottom:16px;color:var(--mu)}summary{cursor:pointer;padding:4px 0}
+.g{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}.gl{width:100%;font-size:13px;margin-top:6px}textarea{width:100%;height:46px}
+.pn{background:linear-gradient(180deg,var(--p2),var(--p1));border:1px solid var(--ln);border-radius:var(--r);margin-bottom:16px;overflow:hidden;animation:in .5s both}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.ph{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--ln);font:600 16px Georgia,serif}
+.ph small{font:13px "Avenir Next",system-ui,sans-serif;color:var(--mu)}.bd{margin-left:auto;font:600 12px system-ui;padding:3px 10px;border-radius:99px;background:#d4ad5526;color:var(--br2)}
+.row{display:grid;grid-template-columns:1.3fr 1.2fr 1.2fr .9fr 1fr 1.05fr;gap:14px;align-items:center;padding:13px 18px;border-bottom:1px solid #15242a}
+.row:last-child{border:0}.row.hd{padding:9px 18px;color:var(--mu);font-size:12px;background:#0a1317}
+.row.buy{box-shadow:inset 3px 0 0 var(--up);background:linear-gradient(90deg,#34d3991c,transparent 55%)}.row.sell{box-shadow:inset 3px 0 0 var(--dn);background:linear-gradient(90deg,#ff6b5e1e,transparent 55%)}
+.sy b{font-size:16px;display:block}.sy span,.stp small{color:var(--mu);font-size:12.5px;font-variant-numeric:tabular-nums}.stp{font-variant-numeric:tabular-nums}.stp small{display:block}
+.tr{display:flex;gap:6px}.chip{font-size:12.5px;padding:3px 10px;border-radius:99px;border:1px solid var(--ln);color:var(--mu)}
+.chip.u{color:var(--up);border-color:#34d39955;background:#34d3991a}.chip.d{color:var(--dn);border-color:#ff6b5e55;background:#ff6b5e1a}
+.ad{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}.ad div{flex:1;height:5px;border-radius:5px;background:var(--ln);overflow:hidden}.ad i{display:block;height:100%;background:linear-gradient(90deg,var(--br),var(--br2))}
+.sgn{text-align:right;font:400 20px Georgia,serif}.sgn small{display:block;font:12.5px "Avenir Next",system-ui,sans-serif;color:var(--mu)}
+.sgn.u{color:var(--up)}.sgn.d{color:var(--dn)}.sgn.n{font:13px system-ui;color:var(--mu)}
+svg.sp{width:100%;height:32px}.msg{padding:18px;color:var(--mu);font-size:13px}.msg.c{text-align:center;padding:34px}
+@media(max-width:820px){.kpis{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr auto;row-gap:8px}.row.hd,.sp,.ad{display:none}.sgn{grid-row:1;grid-column:2}.tr{grid-row:2}.stp{grid-row:2;grid-column:2;text-align:right}}
+@media(max-width:480px){.kpis{grid-template-columns:1fr}.hr{margin-left:0;width:100%;justify-content:space-between}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+.hl{display:grid;grid-template-columns:1.2fr 1.2fr .5fr .6fr 1fr;gap:10px;padding:10px 18px;border-bottom:1px solid #15242a;font-size:13.5px;font-variant-numeric:tabular-nums}.hl span{color:var(--mu)}.clr{margin-left:auto;background:none;border:1px solid var(--ln);color:var(--mu);border-radius:8px;padding:4px 10px;cursor:pointer}.sy .bt{display:block;color:var(--mu);font-size:11.5px;margin-top:2px}
+</style></head><body>
+<header class="hdr">
+ <div class="lgo"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#d4ad55" stroke-width="2" stroke-linejoin="round"><path d="M13 2l11 11-11 11L2 13z"/><path d="M8.5 13.5l3 3 6-6.5" stroke="#f0d58a"/></svg>Combo Scanner <em>Pro</em></div>
+ <div class="seg" id="tfs"></div>
+ <div class="hr"><span class="live" id="lv"><i></i><span id="st">Ready</span></span><button class="go" id="go">Scan</button></div>
+</header>
+<main class="w">
+<section class="kpis">
+ <div class="k"><span class="kl">Live signals</span><div class="kv" id="k1">-</div><div class="ks" id="k1s">Scan chal raha hai</div></div>
+ <div class="k kg"><div id="gg"></div><div style="flex:1"><span class="kl">Market bias</span><div class="lgd" id="lg"></div></div></div>
+ <div class="k"><span class="kl">Symbols scanned</span><div class="kv" id="k3">-</div><div class="ks" id="k3s">&nbsp;</div></div>
+ <div class="k"><span class="kl">Next auto-scan</span><div class="kv" id="nx">Off</div><div class="ks">Har 60 second</div></div>
+</section>
+<section id="hot"></section>
+<section class="ctl">
+ <div class="tabs" id="tb"><button class="on" data-f="All">Sab</button><button data-f="Crypto">Crypto</button><button data-f="Metals">Metals</button><button data-f="Forex">Forex</button></div>
+ <label>Window <input id="win" type="number" min="0" max="5" value="0"></label>
+ <label>Taaza <input id="rec" type="number" min="0" value="3"> candles</label>
+ <label><input id="so" type="checkbox">Sirf signals</label>
+ <label><input id="auto" type="checkbox">Auto-scan</label>
+ <label><input id="al" type="checkbox">Alerts</label>
+</section>
+<details><summary>Watchlist aur settings</summary>
+<div class="g"><span class="gl">Crypto</span><textarea id="g_Crypto">BTCUSDT,ETHUSDT,SOLUSDT,XRPUSDT,BNBUSDT,DOGEUSDT,ADAUSDT,AVAXUSDT,LINKUSDT</textarea>
+<span class="gl">Metals: gold aur silver (Binance perpetual)</span><textarea id="g_Metals">XAUUSDT,XAGUSDT</textarea>
+<span class="gl">Forex: EURUSDT jaise Binance pairs, ya EUR/USD jaise (Twelve Data key chahiye)</span><textarea id="g_Forex">EURUSDT,GBPUSDT,AUDUSDT</textarea>
+<label>Twelve Data key <input id="key" type="password" placeholder="optional" autocomplete="off"></label>
+<span class="gl">Telegram alerts: BotFather se token lein, @userinfobot se chat id</span>
+<label>Bot token <input id="tk" type="password" autocomplete="off"></label><label>Chat id <input id="ci" autocomplete="off"></label><button class="go" id="tgt" type="button" style="padding:7px 16px">Test</button><span class="ks" id="tgm" style="align-self:center"></span></div>
+<div class="g">
+ <label>ST factor <input id="f" type="number" step="0.1" value="3"></label>
+ <label>ST ATR <input id="sl" type="number" value="14"></label>
+ <label><input id="ch" type="checkbox" checked>ADX filter</label>
+ <label>ADX len <input id="al2" type="number" value="14"></label>
+ <label>ADX min <input id="at" type="number" value="15"></label>
+ <label>MMT ATR <input id="ml" type="number" value="7"></label>
+ <label>MMT mult <input id="mm" type="number" step="0.1" value="2.8"></label>
+</div></details>
+<div id="out"><div class="msg c">Pehla scan load ho raha hai...</div></div>
+<section class="pn" id="hist"></section>
+</main>
+<script>
+const $=i=>document.getElementById(i),N=()=>null,CATS=["Crypto","Metals","Forex"];let TF="1h",FL="All",R=[],busy=0,cd=60;const seen=new Set((()=>{try{return JSON.parse(localStorage.getItem("csseen")||"[]")}catch(e){return[]}})());
+const rma=(a,n)=>{const o=a.map(N);let s=0,c=0,p=null;for(let i=0;i<a.length;i++){const v=a[i];if(v==null)continue;
+ if(p===null){s+=v;if(++c===n){p=s/n;o[i]=p}}else{p=(p*(n-1)+v)/n;o[i]=p}}return o};
+const trf=k=>k.map((x,i)=>i?Math.max(x.h-x.l,Math.abs(x.h-k[i-1].c),Math.abs(x.l-k[i-1].c)):x.h-x.l);
+function supertrend(k,f,n){const A=rma(trf(k),n),ub=[],lb=[],st=[],d=[];
+ for(let i=0;i<k.length;i++){const m=(k[i].h+k[i].l)/2,a=A[i];if(a==null){d[i]=1;ub[i]=lb[i]=st[i]=null;continue}
+  let u=m+f*a,l=m-f*a;const pl=lb[i-1]||0,pu=ub[i-1]||0,pc=i?k[i-1].c:0;
+  l=(l>pl||pc<pl)?l:pl;u=(u<pu||pc>pu)?u:pu;
+  if(A[i-1]==null)d[i]=1;else if(st[i-1]===ub[i-1])d[i]=k[i].c>u?-1:1;else d[i]=k[i].c<l?1:-1;
+  ub[i]=u;lb[i]=l;st[i]=d[i]==-1?l:u}return d}
+function adx(k,n){const T=rma(trf(k),n),pd=[null],md=[null];
+ for(let i=1;i<k.length;i++){const u=k[i].h-k[i-1].h,d=-(k[i].l-k[i-1].l);pd.push(u>d&&u>0?u:0);md.push(d>u&&d>0?d:0)}
+ const P=rma(pd,n),M=rma(md,n),x=k.map((_,i)=>{if(P[i]==null||M[i]==null||!T[i])return null;
+  const p=100*P[i]/T[i],m=100*M[i]/T[i],s=p+m;return Math.abs(p-m)/(s==0?1:s)});
+ return rma(x,n).map(v=>v==null?null:100*v)}
+function mmt(k,n,mu){const A=rma(trf(k),n),up=[],dn=[],t=[];let tr=1;
+ for(let i=0;i<k.length;i++){if(A[i]==null){up[i]=dn[i]=null;t[i]=1;continue}
+  const m=(k[i].h+k[i].l)/2,lo=m-A[i]*mu,hi=m+A[i]*mu,pu=up[i-1]||0,pd=dn[i-1]||0,pc=i?k[i-1].c:null;
+  up[i]=pc!==null&&pc>pu?Math.max(lo,pu):lo;dn[i]=pc!==null&&pc<pd?Math.min(hi,pd):hi;
+  const rd=dn[i-1]??dn[i],ru=up[i-1]??up[i];
+  tr=k[i].c>rd?1:k[i].c<ru?-1:tr;t[i]=tr}
+ return{t,stop:t.at(-1)==1?up.at(-1):dn.at(-1)}}
+function analyze(k,p){
+ const d=supertrend(k,p.f,p.sl),ax=adx(k,p.al);let fd=null;
+ const t1=k.map((_,i)=>{const tn=!p.ch||(ax[i]!=null&&ax[i]>p.at);if(tn||fd==null)fd=d[i];return fd<0?1:-1});
+ const M=mmt(k,p.ml,p.mm),t2=M.t,last={1:{1:-1e9,2:-1e9},"-1":{1:-1e9,2:-1e9}};let sig=null;const sg=[];
+ for(let i=1;i<k.length;i++){const f1=t1[i]!=t1[i-1]?t1[i]:0,f2=t2[i]!=t2[i-1]?t2[i]:0;
+  if(f1)last[f1][1]=i;if(f2)last[f2][2]=i;
+  for(const s of[1,-1])if((f1==s||f2==s)&&i-last[s][1]<=p.w&&i-last[s][2]<=p.w){sig={d:s,ago:k.length-1-i,ct:k[i].ct};sg.push([i,s])}}
+ return{a:t1.at(-1),b:t2.at(-1),sig,px:k.at(-1).c,cl:k.slice(-40).map(x=>x.c),adx:ax.at(-1),stop:M.stop,bt:bts(k,sg)}}
+function bts(k,sg,H=10){const r=sg.filter(([i])=>i+H<k.length).map(([i,d])=>(k[i+H].c-k[i].c)/k[i].c*d*100);
+ return{n:sg.length,m:r.length,wr:r.length?r.filter(x=>x>0).length/r.length*100:null,avg:r.length?r.reduce((a,b)=>a+b,0)/r.length:null}}
+const MS={"5m":3e5,"15m":9e5,"1h":36e5,"4h":144e5,"1d":864e5};
+async function bin(s,tf){const H=["https://api.binance.com/api/v3","https://data-api.binance.vision/api/v3","https://fapi.binance.com/fapi/v1"];
+ if(/^(XAU|XAG)/.test(s))H.unshift(H.pop());let e;for(const h of H){try{const r=await fetch(`${h}/klines?symbol=${s}&interval=${tf}&limit=500`);if(!r.ok)throw 0;const j=await r.json();
+  return j.map(x=>({h:+x[2],l:+x[3],c:+x[4],ct:x[6]}))}catch(x){e=x}}throw e}
+async function td(s,tf){const key=$("key").value.trim();if(!key)throw"nokey";
+ const iv={"5m":"5min","15m":"15min","1h":"1h","4h":"4h","1d":"1day"}[tf];
+ const j=await(await fetch(`https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(s)}&interval=${iv}&outputsize=500&order=ASC&timezone=UTC&apikey=${key}`)).json();
+ if(j.status=="error")throw String(j.message).slice(0,60);
+ return j.values.map(x=>{const d=x.datetime.length==10?x.datetime+"T00:00:00":x.datetime.replace(" ","T");
+  return{h:+x.high,l:+x.low,c:+x.close,ct:Date.parse(d+"Z")+MS[tf]}})}
+async function load(s,tf){const k=await(s.includes("/")?td(s,tf):bin(s,tf));if(k.at(-1).ct>Date.now())k.pop();return k}
+const name=s=>s=="XAUUSDT"?"Gold (XAU)":s=="XAGUSDT"?"Silver (XAG)":s.replace(/(USDT|USDC|BUSD)$/,"");
+const fmt=v=>v==null?"-":v.toLocaleString("en",{maximumFractionDigits:v>=100?2:v>=10?3:v>=1?5:6});
+function spark(c){const mn=Math.min(...c),mx=Math.max(...c),r=mx-mn||1,col=c.at(-1)>=c[0]?"#3ddc97":"#ff6b5e";
+ const pts=c.map((v,i)=>`${(i/(c.length-1)*200).toFixed(1)},${(32-(v-mn)/r*30).toFixed(1)}`).join(" ");
+ return`<svg viewBox="0 0 200 34" preserveAspectRatio="none" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="1.8" vector-effect="non-scaling-stroke"/></svg>`}
+function render(){const rec=+$("rec").value,ok=R.filter(r=>!r.err),hot=ok.filter(r=>r.sig&&r.sig.ago<=rec).sort((x,y)=>x.sig.ago-y.sig.ago);
+ const nb=hot.filter(r=>r.sig.d==1).length,ns=hot.length-nb,tot=ok.length||1;
+ const au=ok.filter(r=>r.a==1&&r.b==1).length,ad=ok.filter(r=>r.a==-1&&r.b==-1).length,mx=ok.length-au-ad;
+ $("k1").textContent=hot.length;$("k1s").innerHTML=`<b style="color:var(--up)">${nb} buy</b> &nbsp;<b style="color:var(--dn)">${ns} sell</b> &nbsp;pichli ${rec} candles mein`;
+ $("k3").textContent=ok.length;$("k3s").textContent=`${TF} timeframe, ${R.length-ok.length?(R.length-ok.length)+" mein data nahi mila":"sab theek"}`;
+ const C=2*Math.PI*38,seg=(v,o,c)=>`<circle r="38" cx="48" cy="48" fill="none" stroke="${c}" stroke-width="10" stroke-dasharray="${Math.max(v/tot*C-2,0)} ${C}" stroke-dashoffset="${-o/tot*C}" transform="rotate(-90 48 48)"/>`;
+ const bias=(au-ad)/tot*100,bw=bias>15?"Bullish":bias<-15?"Bearish":"Neutral";
+ $("gg").innerHTML=`<svg width="96" height="96" viewBox="0 0 96 96"><circle r="38" cx="48" cy="48" fill="none" stroke="#1a2b31" stroke-width="10"/>${seg(au,0,"#34d399")}${seg(mx,au,"#46606a")}${seg(ad,au+mx,"#ff6b5e")}<text x="48" y="52" text-anchor="middle" fill="#e8e4d8" font-family="Georgia,serif" font-size="15">${bw}</text></svg>`;
+ $("lg").innerHTML=`<span><i style="background:#34d399"></i>Dono up<b>${au}</b></span><span><i style="background:#46606a"></i>Mixed<b>${mx}</b></span><span><i style="background:#ff6b5e"></i>Dono down<b>${ad}</b></span>`;
+ $("hot").innerHTML=hot.length?`<h3 class="sh">Taaza signals</h3><div class="tiles">${hot.map(r=>{const u=r.sig.d==1;
+  return`<div class="tile ${u?"buy":"sell"}"><div class="t1"><b>${name(r.s)}</b><span class="dir" style="color:var(--${u?"up":"dn"})">${u?"Buy":"Sell"}</span></div><small>${r.sig.ago?r.sig.ago+" candle pehle":"abhi, candle close par"}</small><small>Price ${fmt(r.px)} &nbsp;Stop ${fmt(r.stop)}</small></div>`}).join("")}</div>`:"";
+ const cats=CATS.filter(c=>FL=="All"||c==FL);let html="";
+ cats.forEach(c=>{let L=ok.filter(r=>r.cat==c).sort((x,y)=>(x.sig?x.sig.ago:1e9)-(y.sig?y.sig.ago:1e9));const all=L.length,bad=R.filter(r=>r.err&&r.cat==c);
+  if($("so").checked)L=L.filter(r=>r.sig&&r.sig.ago<=rec);if(!all&&!bad.length)return;
+  const hc=L.filter(r=>r.sig&&r.sig.ago<=rec).length;
+  html+=`<section class="pn"><div class="ph">${c}<small>${all} symbols</small>${hc?`<span class="bd">${hc} signal${hc>1?"s":""}</span>`:""}</div>
+  <div class="row hd"><span>Symbol</span><span>Last 40 candles</span><span>Trend</span><span>ADX</span><span>MMT stop</span><span style="text-align:right">Signal</span></div>`+
+  L.map(r=>{const g=r.sig&&r.sig.ago<=rec,u=r.sig&&r.sig.d==1,dist=r.stop?Math.abs(r.px-r.stop)/r.px*100:null;
+   return`<div class="row ${g?(u?"buy":"sell"):""}"><div class="sy"><b>${name(r.s)}</b><span>${fmt(r.px)}</span><span class="bt">Backtest: ${r.bt.n} signal${r.bt.m?`, ${r.bt.wr.toFixed(0)}% jeet, avg ${r.bt.avg>0?"+":""}${r.bt.avg.toFixed(2)}% (10 candle)`:""}</span></div>${spark(r.cl).replace("<svg",'<svg class="sp"')}
+   <div class="tr"><span class="chip ${r.a==1?"u":"d"}">AI ${r.a==1?"▲":"▼"}</span><span class="chip ${r.b==1?"u":"d"}">MMT ${r.b==1?"▲":"▼"}</span>${r.h==null?"":`<span class="chip ${r.h==1?"u":r.h==-1?"d":""}">HTF ${r.h==1?"▲":r.h==-1?"▼":"~"}</span>`}</div>
+   <div class="ad"><div><i style="width:${Math.min(100,(r.adx||0)*2)}%"></i></div>${r.adx==null?"-":r.adx.toFixed(0)}</div>
+   <div class="stp">${fmt(r.stop)}<small>${dist==null?"":dist.toFixed(2)+"% door"}</small></div>
+   ${r.sig?`<div class="sgn ${g?(u?"u":"d"):""}">${u?"Buy":"Sell"}<small>${r.sig.ago?r.sig.ago+" candle pehle":"abhi"}${g&&r.h==r.sig.d?" &nbsp;Strong":""}</small></div>`:`<div class="sgn n">Signal nahi</div>`}</div>`}).join("")+
+  (L.length?"":`<div class="msg">Is waqt koi signal nahi.</div>`)+
+  (bad.length?`<div class="msg">${bad.map(r=>r.s+(r.err=="nokey"?" (Twelve Data key chahiye)":" (data nahi mila)")).join(", ")}</div>`:"")+`</section>`});
+ $("out").innerHTML=html||`<div class="msg c">Is filter mein koi symbol nahi mila.</div>`}
+async function tgsend(t){const tk=$("tk").value.trim(),ci=$("ci").value.trim();if(!tk||!ci)return"skip";
+ try{const j=await(await fetch(`https://api.telegram.org/bot${tk}/sendMessage?chat_id=${encodeURIComponent(ci)}&text=${encodeURIComponent(t)}`)).json();return j.ok?"ok":(j.description||"error")}catch(e){return"network error"}}
+function renderHist(){let L=[];try{L=JSON.parse(localStorage.getItem("cslog")||"[]")}catch(e){}
+ $("hist").innerHTML=`<div class="ph">Signal history<small>${L.length} saved is device par</small><button class="clr" id="clr">Clear</button></div>`+(L.length?L.slice(0,15).map(x=>`<div class="hl"><span>${new Date(x.t).toLocaleString([],{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}</span><b>${name(x.s)}</b><span>${x.tf}</span><span style="color:var(--${x.d==1?"up":"dn"})">${x.d==1?"Buy":"Sell"}</span><span>${fmt(x.px)}</span></div>`).join(""):`<div class="msg">Abhi koi signal log nahi hua. Page khula rakhein, naye signals yahan jama honge.</div>`);
+ $("clr").onclick=()=>{try{localStorage.removeItem("cslog")}catch(e){}renderHist()}}
+function notify(){const fresh=[];
+ R.forEach(r=>{if(!r.sig||r.sig.ago)return;const k=r.s+TF+r.sig.ct;if(seen.has(k))return;seen.add(k);fresh.push(r)});
+ if(!fresh.length)return;let L=[];
+ try{localStorage.setItem("csseen",JSON.stringify([...seen].slice(-300)));L=JSON.parse(localStorage.getItem("cslog")||"[]")}catch(e){}
+ fresh.forEach(r=>{const u=r.sig.d==1,dist=r.stop?Math.abs(r.px-r.stop)/r.px*100:0;L.unshift({t:Date.now(),s:r.s,tf:TF,d:r.sig.d,px:r.px});
+  tgsend(`${u?"🟢 BUY":"🔴 SELL"} ${name(r.s)} (${TF})\nPrice ${fmt(r.px)}  Stop ${fmt(r.stop)} (${dist.toFixed(2)}%)${r.h==null?"":"\nHTF: "+(r.h==r.sig.d?"match (strong)":r.h==0?"mixed":"against")}`);
+  if($("al").checked&&"Notification"in window&&Notification.permission=="granted")new Notification(`${u?"BUY":"SELL"} ${name(r.s)} (${TF})`,{body:"AI Supertrend aur RedK MMTStop ka same-candle signal"})});
+ try{localStorage.setItem("cslog",JSON.stringify(L.slice(0,100)))}catch(e){}
+ renderHist();if($("al").checked){beep();navigator.vibrate&&navigator.vibrate(200)}}
+function beep(){try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.value=.08;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.18)}catch(e){}}
+async function scan(){if(busy)return;busy=1;$("go").disabled=true;$("st").textContent="Scan ho raha hai";
+ const p={f:+$("f").value,sl:+$("sl").value,ch:$("ch").checked,al:+$("al2").value,at:+$("at").value,ml:+$("ml").value,mm:+$("mm").value,w:+$("win").value};
+ const items=CATS.flatMap(c=>$("g_"+c).value.split(/[\s,]+/).filter(Boolean).map(s=>({s:s.toUpperCase(),cat:c})));
+ try{localStorage.setItem("csp",JSON.stringify({g:CATS.map(c=>$("g_"+c).value),tf:TF,key:$("key").value,tk:$("tk").value,ci:$("ci").value}))}catch(e){}
+ const HT={"5m":"1h","15m":"1h","1h":"4h","4h":"1d"};
+ const one=async it=>{try{const o={...it,...analyze(await load(it.s,TF),p)};
+  if(HT[TF]&&!it.s.includes("/"))try{const h=analyze(await load(it.s,HT[TF]),p);o.h=h.a==1&&h.b==1?1:h.a==-1&&h.b==-1?-1:0}catch(e){}
+  return o}catch(e){return{...it,err:String(e)}}};
+ const tdI=items.filter(i=>i.s.includes("/")),bn=items.filter(i=>!i.s.includes("/"));
+ const [A,B]=await Promise.all([Promise.all(bn.map(one)),(async()=>{const o=[];for(const i of tdI)o.push(await one(i));return o})()]);
+ R=[...A,...B];render();notify();busy=0;cd=60;$("go").disabled=false;
+ $("st").textContent="Updated "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}
+Object.keys(MS).forEach(t=>{const b=document.createElement("button");b.textContent=t;b.className=t==TF?"on":"";
+ b.onclick=()=>{TF=t;[...$("tfs").children].forEach(x=>x.className=x==b?"on":"");scan()};$("tfs").append(b)});
+$("tb").onclick=e=>{const f=e.target.dataset.f;if(!f)return;FL=f;[...$("tb").querySelectorAll("button")].forEach(x=>x.className=x.dataset.f==f?"on":"");render()};
+$("so").onchange=render;$("go").onclick=scan;$("rec").onchange=render;
+$("al").onchange=e=>{if(e.target.checked&&"Notification"in window)Notification.requestPermission()};
+$("auto").onchange=e=>{$("lv").className="live"+(e.target.checked?" on":"");cd=60};
+setInterval(()=>{if($("auto").checked&&!busy&&--cd<=0)scan()},1000);
+try{const v=JSON.parse(localStorage.getItem("csp"));if(v){CATS.forEach((c,i)=>$("g_"+c).value=v.g[i]);TF=v.tf;$("key").value=v.key||"";$("tk").value=v.tk||"";$("ci").value=v.ci||"";
+ [...$("tfs").children].forEach(x=>x.className=x.textContent==TF?"on":"")}}catch(e){}
+setInterval(()=>{$("nx").textContent=$("auto").checked?(busy?"...":cd+"s"):"Off"},1000);
+renderHist();
+$("tgt").onclick=async()=>{$("tgm").textContent="...";const r=await tgsend("Combo Scanner: test message");$("tgm").textContent=r=="ok"?"Message bhej diya":r=="skip"?"Token aur chat id daalein":r;try{localStorage.setItem("csp",JSON.stringify({...JSON.parse(localStorage.getItem("csp")||"{}"),tk:$("tk").value,ci:$("ci").value}))}catch(e){}};
+scan();
+</script></body></html>
