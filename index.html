@@ -56,7 +56,7 @@ svg.sp{width:100%;height:32px}.msg{padding:18px;color:var(--mu);font-size:13px}.
 @media(max-width:480px){.kpis{grid-template-columns:1fr}.hr{margin-left:0;width:100%;justify-content:space-between}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important}}
 .hl{display:grid;grid-template-columns:1.2fr 1.2fr .5fr .6fr 1fr;gap:10px;padding:10px 18px;border-bottom:1px solid #15242a;font-size:13.5px;font-variant-numeric:tabular-nums}.hl span{color:var(--mu)}.clr{margin-left:auto;background:none;border:1px solid var(--ln);color:var(--mu);border-radius:8px;padding:4px 10px;cursor:pointer}.sy .bt{display:block;color:var(--mu);font-size:11.5px;margin-top:2px}
-</style></head><body>
+</style><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#070d10"><link rel="apple-touch-icon" href="icon-192.png"></head><body>
 <header class="hdr">
  <div class="lgo"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#d4ad55" stroke-width="2" stroke-linejoin="round"><path d="M13 2l11 11-11 11L2 13z"/><path d="M8.5 13.5l3 3 6-6.5" stroke="#f0d58a"/></svg>Combo Scanner <em>Pro</em></div>
  <div class="seg" id="tfs"></div>
@@ -212,4 +212,4 @@ setInterval(()=>{$("nx").textContent=$("auto").checked?(busy?"...":cd+"s"):"Off"
 renderHist();
 $("tgt").onclick=async()=>{$("tgm").textContent="...";const r=await tgsend("Combo Scanner: test message");$("tgm").textContent=r=="ok"?"Message bhej diya":r=="skip"?"Token aur chat id daalein":r;try{localStorage.setItem("csp",JSON.stringify({...JSON.parse(localStorage.getItem("csp")||"{}"),tk:$("tk").value,ci:$("ci").value}))}catch(e){}};
 scan();
-</script></body></html>
+</script><script>if("serviceWorker"in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script></body></html>
